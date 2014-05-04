@@ -19,7 +19,6 @@ package org.hibernate.keeper.entity;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.metamodel.binding.EntityBinding;
-import org.hibernate.metamodel.binding.InheritanceType;
 import org.hibernate.tuple.entity.EntityMetamodel;
 
 /**
@@ -28,6 +27,7 @@ import org.hibernate.tuple.entity.EntityMetamodel;
 @SuppressWarnings("serial")
 public class HibernateKeeperEntityMetamodel extends EntityMetamodel {
 
+	protected PersistentClass persistentClass;
 	protected EntityMetamodel delegatedEntityMetamodel;
 	protected boolean[] realPropertyLaziness;
 	
@@ -43,14 +43,15 @@ public class HibernateKeeperEntityMetamodel extends EntityMetamodel {
 		delegatedEntityMetamodel = new EntityMetamodel(persistentClass, sessionFactory);
 	}
 	
-	public HibernateKeeperEntityMetamodel(EntityMetamodel delegatedEntityMetamodel) {
-		super(
-			new EntityBinding(
-					// FIXME Find correct Inheritance Type
-					delegatedEntityMetamodel.isInherited() ? 
-							InheritanceType.TABLE_PER_CLASS : InheritanceType.NO_INHERITANCE, 
-					delegatedEntityMetamodel.getEntityMode()), 
-			delegatedEntityMetamodel.getSessionFactory());
+	public HibernateKeeperEntityMetamodel(PersistentClass persistentClass, 
+			EntityMetamodel delegatedEntityMetamodel) {
+		super(persistentClass, delegatedEntityMetamodel.getSessionFactory());
+		this.delegatedEntityMetamodel = delegatedEntityMetamodel;
+	}
+	
+	public HibernateKeeperEntityMetamodel(EntityBinding entityBinding, 
+			EntityMetamodel delegatedEntityMetamodel) {
+		super(entityBinding, delegatedEntityMetamodel.getSessionFactory());
 		this.delegatedEntityMetamodel = delegatedEntityMetamodel;
 	}
 	

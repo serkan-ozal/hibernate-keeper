@@ -35,7 +35,10 @@ import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.engine.spi.ValueInclusion;
 import org.hibernate.id.IdentifierGenerator;
 import org.hibernate.internal.FilterAliasGenerator;
+import org.hibernate.keeper.entity.HibernateKeeperEntityMetamodel;
+import org.hibernate.mapping.PersistentClass;
 import org.hibernate.metadata.ClassMetadata;
+import org.hibernate.metamodel.binding.EntityBinding;
 import org.hibernate.persister.entity.EntityPersister;
 import org.hibernate.tuple.entity.EntityMetamodel;
 import org.hibernate.tuple.entity.EntityTuplizer;
@@ -48,9 +51,28 @@ import org.hibernate.type.VersionType;
 public class HibernateKeeperEntityPersister implements EntityPersister {
 
 	protected EntityPersister delegatedEntityPersister;
+	protected PersistentClass persistentClass;
+	protected EntityBinding entityBinding;
+	protected EntityMetamodel entityMetamodel;
 	
-	public HibernateKeeperEntityPersister(EntityPersister delegatedEntityPersister) {
+	public HibernateKeeperEntityPersister(PersistentClass persistentClass, 
+			EntityPersister delegatedEntityPersister) {
+		this.persistentClass = persistentClass;
 		this.delegatedEntityPersister = delegatedEntityPersister;
+		this.entityMetamodel = 
+				new HibernateKeeperEntityMetamodel(
+						persistentClass,
+						delegatedEntityPersister.getEntityMetamodel());
+	}
+	
+	public HibernateKeeperEntityPersister(EntityBinding entityBinding, 
+			EntityPersister delegatedEntityPersister) {
+		this.entityBinding = entityBinding;
+		this.delegatedEntityPersister = delegatedEntityPersister;
+		this.entityMetamodel = 
+				new HibernateKeeperEntityMetamodel(
+						entityBinding,
+						delegatedEntityPersister.getEntityMetamodel());
 	}
 	
 	@Override
@@ -80,7 +102,7 @@ public class HibernateKeeperEntityPersister implements EntityPersister {
 
 	@Override
 	public EntityMetamodel getEntityMetamodel() {
-		return delegatedEntityPersister.getEntityMetamodel();
+		return entityMetamodel;
 	}
 
 	@Override

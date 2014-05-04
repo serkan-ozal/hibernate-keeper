@@ -56,7 +56,8 @@ public class HibernateKeeperPersisterFactory implements PersisterFactory {
 			NaturalIdRegionAccessStrategy naturalIdAccessStrategy,
 			SessionFactoryImplementor factory, Mapping cfg) throws HibernateException {
 		return 
-			new HibernateKeeperEntityPersister(	
+			new HibernateKeeperEntityPersister(
+					model,
 					delegatedPersisterFactory.createEntityPersister(
 							model, cacheAccessStrategy, naturalIdAccessStrategy, factory, cfg));
 	}
@@ -66,7 +67,8 @@ public class HibernateKeeperPersisterFactory implements PersisterFactory {
 			EntityRegionAccessStrategy cacheAccessStrategy,
 			SessionFactoryImplementor factory, Mapping cfg) throws HibernateException {
 		return 
-			new HibernateKeeperEntityPersister(		
+			new HibernateKeeperEntityPersister(	
+					model,
 					delegatedPersisterFactory.createEntityPersister(
 							model, cacheAccessStrategy, factory, cfg));
 	}

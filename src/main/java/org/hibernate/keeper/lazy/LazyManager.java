@@ -26,9 +26,4 @@ public interface LazyManager {
 	public void clearLazyConditionProperty(String propertyName);
 	public boolean getLazyConditionProperty(String propertyName);
 	
-	public void enableLazyLoadConditionProperty(String propertyName);
-	public void disableLazyLoadConditionProperty(String propertyName);
-	public void clearLazyLoadConditionProperty(String propertyName);
-	public boolean getLazyLoadConditionProperty(String propertyName);
-	
 }

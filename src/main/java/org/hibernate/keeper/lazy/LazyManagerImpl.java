@@ -25,7 +25,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public class LazyManagerImpl implements LazyManager {
 
 	private Map<String, Boolean> lazyConditionPropertyMap = new ConcurrentHashMap<String, Boolean>();
-	private Map<String, Boolean> lazyLoadConditionPropertyMap = new ConcurrentHashMap<String, Boolean>();
 	
 	@Override
 	public synchronized void enableLazyConditionProperty(String propertyName) {
@@ -53,30 +52,4 @@ public class LazyManagerImpl implements LazyManager {
 		}	
 	}
 	
-	@Override
-	public synchronized void enableLazyLoadConditionProperty(String propertyName) {
-		lazyLoadConditionPropertyMap.put(propertyName, true);
-	}
-
-	@Override
-	public synchronized void disableLazyLoadConditionProperty(String propertyName) {
-		lazyLoadConditionPropertyMap.put(propertyName, false);
-	}
-	
-	@Override
-	public synchronized void clearLazyLoadConditionProperty(String propertyName) {
-		lazyLoadConditionPropertyMap.remove(propertyName);
-	}
-
-	@Override
-	public boolean getLazyLoadConditionProperty(String propertyName) {
-		Boolean propertyValue = lazyLoadConditionPropertyMap.get(propertyName);
-		if (propertyValue == null) {
-			return false;
-		}
-		else {
-			return propertyValue;
-		}	
-	}
-
 }
